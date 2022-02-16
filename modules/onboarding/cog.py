@@ -14,7 +14,19 @@ class Onboarding(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.bot.add_view(IntroductionStep())
+        #Find welcomechannel and fix the welcome message
+        welcome_channel = 941699504141377536
+        channel = None
+        introduction = IntroductionStep()
+        for guild in self.bot.guilds:
+            for channel in guild.channels:
+                if channel.id == welcome_channel:
+                    try:
+                        message = await channel.fetch_message(943554424465403934)
+                        await message.edit(introduction.message(), view=introduction)
+                    except:
+                        await channel.send(introduction.message(), view=introduction)
+        
 
     @commands.Cog.listener()
     async def on_member_join(self, member: nextcord.Member):
@@ -28,16 +40,13 @@ class Onboarding(commands.Cog):
                 await member.add_roles(role)
             else:
                 print("Failed to fetch the wizard role")
-        if channel:
-            message = f"Welcome {member.mention}, what would you like to do in our server?"
-            await channel.send(message, view=IntroductionStep())
         
 
     @nextcord.slash_command(guild_ids=GUILD_IDS)
-    async def onboarding(self, interaction: nextcord.Integration):
+    async def onboarding(self, interaction: nextcord.Interaction):
         """Begins the onboarding flow"""
-        message = f"Welcome {interaction.user.mention}, what would you like to do in our server?"
-        await interaction.send(message, view=IntroductionStep())
+        introduction = IntroductionStep()
+        await interaction.send(introduction.message(), view=introduction, ephemeral=True)
     
 
 def setup(bot: commands.Bot):
