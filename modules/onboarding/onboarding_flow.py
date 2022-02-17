@@ -1,8 +1,4 @@
-from code import interact
-from email import message
-from re import S
-from unicodedata import name
-import config
+import config, utils
 from discord import Embed, Interaction
 import nextcord
 from nextcord import Interaction, Message, User, Member
@@ -22,6 +18,9 @@ class IntroPage(nextcord.ui.View):
         role = user.guild.get_role(role_id)
         if role:
             await user.add_roles(role)
+            await utils.log(user.guild, f"Gave {role.mention} to {user.mention}")
+        else:
+            await utils.log(user.guild, f"Failed to find role_id {role_id} for {user.mention}")
 
 class IntroductionStep(IntroPage):
     def message(self):
@@ -29,13 +28,13 @@ class IntroductionStep(IntroPage):
 
     @nextcord.ui.button(label="Build a VR app", emoji="🛠")
     async def build_vr_button(self, button, interaction: Interaction):
-        await self.give_user_role(interaction.user, config.ROLE_APP_DEV)
+        await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
         next = BuildVrAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
     @nextcord.ui.button(label="Help build Alloverse", emoji="🚧")
     async def build_alloverse_button(self, button, interaction: Interaction):
-        await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEV)
+        await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEVELOPER)
         next = BuildAlloverseAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
@@ -44,12 +43,12 @@ class IntroductionStep(IntroPage):
         channel_suggestion = interaction.guild.get_channel(config.CHANNEL_FEATURE_SUGGESTION)
         channel_suggestion = (channel_suggestion and channel_suggestion.mention) or "#feature-suggestions"
         
-        channel_development = interaction.guild.get_channel(config.CHANNEL_DEVELOPMENT)
-        channel_development = (channel_development and channel_development.mention) or "#development"
+        channel_coding = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
+        channel_coding = (channel_coding and channel_coding.mention) or "#coding-alloverse"
         
         await interaction.send(
             content="\n\n".join([
-                f"🐛 Thanks! Ask around in {channel_development} or {channel_suggestion}. You could also go straight to filing it in our Github issue tracking system.", 
+                f"🐛 Thanks! Ask around in {channel_coding} or {channel_suggestion}. You could also go straight to filing it in our Github issue tracking system.", 
             ]),
             ephemeral=True
     )
@@ -59,7 +58,7 @@ class IntroductionStep(IntroPage):
         channel_announcements = interaction.guild.get_channel(config.CHANNEL_ANNOUNCEMENTS)
         channel_announcements = (channel_announcements and channel_announcements.mention) or "#announcements"
 
-        channel_showcase = interaction.guild.get_channel(config.CHANNEL_DEVELOPMENT)
+        channel_showcase = interaction.guild.get_channel(config.CHANNEL_SHOWCASE)
         channel_showcase = (channel_showcase and channel_showcase.mention) or "#showcase"
 
         await interaction.send(
@@ -118,7 +117,7 @@ class BuildAlloverseAppStep(IntroPage):
 
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
-        await self.give_user_role(interaction.user, config.ROLE_CODER)
+        await self.give_user_role(interaction.user, config.ROLE_PROGRAMMER)
         channel = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
         channel = (channel and channel.mention) or "#coding-alloverse"
         await interaction.send(
