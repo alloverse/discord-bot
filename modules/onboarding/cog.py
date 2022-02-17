@@ -4,7 +4,7 @@ from nextcord.ext import commands
 from setuptools import setup
 from .onboarding_flow import IntroductionStep
 
-from bot import GUILD_IDS
+import config
 
 class Onboarding(commands.Cog):
     """Provides new users with an onboarding flow"""
@@ -42,7 +42,7 @@ class Onboarding(commands.Cog):
                 print("Failed to fetch the wizard role")
         
 
-    @nextcord.slash_command(guild_ids=GUILD_IDS)
+    @nextcord.slash_command(guild_ids=config.GUILD_IDS)
     async def onboarding(self, interaction: nextcord.Interaction):
         """Begins the onboarding flow"""
         introduction = IntroductionStep()

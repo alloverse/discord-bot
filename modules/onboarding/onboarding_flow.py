@@ -1,8 +1,8 @@
 from code import interact
 from email import message
 from re import S
+from unicodedata import name
 import config
-from utils import button_id
 from discord import Embed, Interaction
 import nextcord
 from nextcord import Interaction, Message, User, Member
@@ -23,50 +23,50 @@ class IntroPage(nextcord.ui.View):
         if role:
             await user.add_roles(role)
 
-
-class CompletePage(IntroPage):
-    def __init__(self, prev: nextcord.ui.View, text):
-        super().__init__(prev=prev)
-        self.text = text
-        self.prev = prev
-
-    def message(self): 
-        return self.text
-
-    @nextcord.ui.button(emoji="🔙")
-    async def go_back(self, button, interaction: Interaction):
-        if self.prev:
-            await interaction.edit_original_message(self.prev.message(), view=self.prev)
-        else:
-            await interaction.delete_original_message()
-
 class IntroductionStep(IntroPage):
     def message(self):
         return f"Welcome, what would you like to do in our server?"
 
     @nextcord.ui.button(label="Build a VR app", emoji="🛠")
     async def build_vr_button(self, button, interaction: Interaction):
-        self.give_user_role(interaction.user, config.ROLE_APP_DEV)
+        await self.give_user_role(interaction.user, config.ROLE_APP_DEV)
         next = BuildVrAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
     @nextcord.ui.button(label="Help build Alloverse", emoji="🚧")
     async def build_alloverse_button(self, button, interaction: Interaction):
-        self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEV)
+        await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEV)
         next = BuildAlloverseAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
     @nextcord.ui.button(label="File a bug or request a feature", emoji="🐞")
     async def file_a_bug_button(self, button, interaction: Interaction):
+        channel_suggestion = interaction.guild.get_channel(config.CHANNEL_FEATURE_SUGGESTION)
+        channel_suggestion = (channel_suggestion and channel_suggestion.mention) or "#feature-suggestions"
+        
+        channel_development = interaction.guild.get_channel(config.CHANNEL_DEVELOPMENT)
+        channel_development = (channel_development and channel_development.mention) or "#development"
+        
         await interaction.send(
-            "🐛 Thanks! Ask around in #development or #feature-suggestions. You could also go straight to filing it in our Github issue tracking system.", 
+            content="\n\n".join([
+                f"🐛 Thanks! Ask around in {channel_development} or {channel_suggestion}. You could also go straight to filing it in our Github issue tracking system.", 
+            ]),
             ephemeral=True
     )
     
     @nextcord.ui.button(label="Just look around", emoji="👀")
     async def just_looking_around_button(self, button, interaction: Interaction):
+        channel_announcements = interaction.guild.get_channel(config.CHANNEL_ANNOUNCEMENTS)
+        channel_announcements = (channel_announcements and channel_announcements.mention) or "#announcements"
+
+        channel_showcase = interaction.guild.get_channel(config.CHANNEL_DEVELOPMENT)
+        channel_showcase = (channel_showcase and channel_showcase.mention) or "#showcase"
+
         await interaction.send(
-            "💁 Okay then! That was always allowed!",
+            content="\n\n".join([
+                "💁 Okay then! That was always allowed!",
+                f"Check out {channel_announcements} for a quick look at the current state of Alloverse, or {channel_showcase} to see what others are building. Then, come say hi in the General voice- or text channels!"
+            ]),
             ephemeral=True
         )
             
@@ -77,23 +77,38 @@ class BuildVrAppStep(IntroPage):
 
     @nextcord.ui.button(label="I'm kind of a newbie", emoji="👾")
     async def beginner(self, button, interaction: Interaction):
-        await interaction.edit(
-            content="Check out the Getting Started Guide to create your own app in a few minutes. You're also always welcome to ask questions in #support - we respond to all questions, no matter what level.",
-            view=None
+        channel_support = interaction.guild.get_channel(config.CHANNEL_SUPPORT)
+        channel_support = (channel_support and channel_support.mention) or "#support"
+        await interaction.send(
+            content="\n\n".join([
+                f"Check out the Getting Started Guide to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+            ]),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="3D Stuff", emoji="🫖")
     async def three_dee(self, button, interaction: Interaction):
-        await interaction.response.edit_message(
-            content="Super! Next stop: our documentation (which also houses a Getting Started Guide). See you in #app-developers!",
-            view=None
+        channel = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
+        channel = (channel and channel.mention) or "#app-developers"
+        await interaction.send(
+            content="\n\n".join([
+                f"Super! Next stop: our documentation (which also houses a Getting Started Guide). See you in {channel}!",
+                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+            ]),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="2D Stuff", emoji="🖼")
     async def two_dee(self, button, interaction: Interaction):
-        await interaction.response.edit_message(
-            content="Super! We wrote this blog post for people just like you! See you in #app-developers!",
-            view=None
+        channel = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
+        channel = (channel and channel.mention) or "#app-developers"
+        await interaction.send(
+            content="\n\n".join([
+                f"Super! We wrote this blog post for people just like you! See you in {channel}!",
+                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!",
+            ]),
+            ephemeral=True
         )
 
 
@@ -104,45 +119,71 @@ class BuildAlloverseAppStep(IntroPage):
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_CODER)
-        interaction.user.add_roles
-        await interaction.edit(
-            content="🤖 Whoa! Someone speaks my language! You'll feel right at home in #coding-alloverse :3",
-            view=None
+        channel = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
+        channel = (channel and channel.mention) or "#coding-alloverse"
+        await interaction.send(
+            content="\n\n".join([
+                f"🤖 Whoa! Someone speaks my language! You'll feel right at home in {channel} :3",
+            ]),
+            embed=nextcord.Embed(title="Take a look at the current programming tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="Design", emoji="👩‍🎨")
     async def design(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_DESIGNER)
-        await interaction.edit(
-            content="🖌️ Fantastic! You'll love #product-design or #visual-design!",
-            view=None
+        channel_prod = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
+        channel_prod = (channel_prod and channel_prod.mention) or "#product-design"
+        channel_vis = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
+        channel_vis = (channel_vis and channel_vis.mention) or "#visual-design"
+        await interaction.send(
+            content="\n\n".join([
+                f"🖌️ Fantastic! You'll love {channel_prod} or {channel_vis}!",
+            ]),
+            embed=nextcord.Embed(title="Take a look at the current design tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="Finiancial contributions", emoji="💰")
     async def design(self, button, interaction: Interaction):
-        await interaction.edit(
-            content="💰Wow! You're a hero. Bills needs a-paying. For financial contributions, please consider becoming a GitHub Sponsor.",
-            view=None
+        await interaction.send(
+            content="\n\n".join([
+                "💰Wow! You're a hero. Bills needs a-paying. For financial contributions, please consider becoming a GitHub Sponsor.",
+            ]),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="Discord Boosting", emoji="🔋")
     async def design(self, button, interaction: Interaction):
-        await interaction.edit(
-            content="💎 We'll gladly be on the receiving end of your generosity! In the top left corner of the Alloverse Discord, you'll find the button to boost.",
-            view=None
+        await interaction.send(
+            content="\n\n".join([
+                "💎 We'll gladly be on the receiving end of your generosity! In the top left corner of the Alloverse Discord, you'll find the button to boost.",
+            ]),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="Spreading the word", emoji="📣")
     async def design(self, button, interaction: Interaction):
-        await self.flow.complete(
-            "📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the #marketing channel. Additionally, you can help make a difference simply by talking about Alloverse IRL, following us on social media and post using the hashtag #alloverse.",
-            interaction
+        channel_marketing = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
+        channel_marketing = (channel_marketing and channel_marketing.mention) or "#marketing"
+
+        channel_alloverse = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
+        channel_alloverse = (channel_alloverse and channel_alloverse.mention) or "#alloverse"
+        await interaction.send(
+            content="\n\n".join([
+                f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel. Additionally, you can help make a difference simply by talking about Alloverse IRL, following us on social media and post using the hashtag {channel_alloverse}.",
+            ]),
+            ephemeral=True
         )
 
     @nextcord.ui.button(label="Other", emoji="🌎")
     async def design(self, button, interaction: Interaction):
-        await interaction.edit(
-            content="⁉️ Oh, Interesting! Please reach out to tobi#4874 and we'll chat about it, ok?",
-            view=None
+        user_tobi = interaction.client.get_user(config.USER_TOBI)
+        user_tobi = user_tobi and f"to {user_tobi.mention}"
+        await interaction.send(
+            content="\n\n".join([
+                f"⁉️ Oh, Interesting! Please reach out {user_tobi} and we'll chat about it, ok?",
+            ]),
+            ephemeral=True
         )
 
