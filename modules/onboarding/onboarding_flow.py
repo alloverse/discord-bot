@@ -18,6 +18,12 @@ class IntroPage(nextcord.ui.View):
     def message(self): 
         return "So..."
 
+    async def give_user_role(self, user: Member , role_id: int):
+        role = user.guild.get_role(role_id)
+        if role:
+            await user.add_roles(role)
+
+
 class CompletePage(IntroPage):
     def __init__(self, prev: nextcord.ui.View, text):
         super().__init__(prev=prev)
@@ -40,11 +46,13 @@ class IntroductionStep(IntroPage):
 
     @nextcord.ui.button(label="Build a VR app", emoji="🛠")
     async def build_vr_button(self, button, interaction: Interaction):
+        self.give_user_role(interaction.user, config.ROLE_APP_DEV)
         next = BuildVrAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
     @nextcord.ui.button(label="Help build Alloverse", emoji="🚧")
     async def build_alloverse_button(self, button, interaction: Interaction):
+        self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEV)
         next = BuildAlloverseAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
@@ -95,6 +103,8 @@ class BuildAlloverseAppStep(IntroPage):
 
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
+        await self.give_user_role(interaction.user, config.ROLE_CODER)
+        interaction.user.add_roles
         await interaction.edit(
             content="🤖 Whoa! Someone speaks my language! You'll feel right at home in #coding-alloverse :3",
             view=None
@@ -102,6 +112,7 @@ class BuildAlloverseAppStep(IntroPage):
 
     @nextcord.ui.button(label="Design", emoji="👩‍🎨")
     async def design(self, button, interaction: Interaction):
+        await self.give_user_role(interaction.user, config.ROLE_DESIGNER)
         await interaction.edit(
             content="🖌️ Fantastic! You'll love #product-design or #visual-design!",
             view=None
