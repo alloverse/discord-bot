@@ -24,21 +24,21 @@ class IntroPage(nextcord.ui.View):
 
 class IntroductionStep(IntroPage):
     def message(self):
-        return f"Welcome, what would you like to do in our server?"
+        return f"Now, what would you like to do here in our server?"
 
-    @nextcord.ui.button(label="Build a VR app", emoji="🛠")
+    @nextcord.ui.button(label="Build a VR App", emoji="🎁")
     async def build_vr_button(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
         next = BuildVrAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
-    @nextcord.ui.button(label="Help build Alloverse", emoji="🚧")
+    @nextcord.ui.button(label="Build the Alloverse Platform", emoji="🛠️")
     async def build_alloverse_button(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEVELOPER)
         next = BuildAlloverseAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
 
-    @nextcord.ui.button(label="File a bug or request a feature", emoji="🐞")
+    @nextcord.ui.button(label="File a bug or feature", emoji="🐞")
     async def file_a_bug_button(self, button, interaction: Interaction):
         channel_suggestion = interaction.guild.get_channel(config.CHANNEL_FEATURE_SUGGESTION)
         channel_suggestion = (channel_suggestion and channel_suggestion.mention) or "#feature-suggestions"
@@ -48,12 +48,13 @@ class IntroductionStep(IntroPage):
         
         await interaction.send(
             content="\n\n".join([
-                f"🐛 Thanks! Ask around in {channel_coding} or {channel_suggestion}. You could also go straight to filing it in our Github issue tracking system.", 
+                f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels.",
+                "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/1", 
             ]),
             ephemeral=True
     )
     
-    @nextcord.ui.button(label="Just look around", emoji="👀")
+    @nextcord.ui.button(label="Just look around", emoji="💁")
     async def just_looking_around_button(self, button, interaction: Interaction):
         channel_announcements = interaction.guild.get_channel(config.CHANNEL_ANNOUNCEMENTS)
         channel_announcements = (channel_announcements and channel_announcements.mention) or "#announcements"
@@ -68,19 +69,19 @@ class IntroductionStep(IntroPage):
             ]),
             ephemeral=True
         )
-            
+
 
 class BuildVrAppStep(IntroPage):
     def message(self):
         return "Great! Let's get you up and running! Do you have previous development experience?"
 
-    @nextcord.ui.button(label="I'm kind of a newbie", emoji="👾")
+    @nextcord.ui.button(label="I'm kind of a newbie", emoji="🐣")
     async def beginner(self, button, interaction: Interaction):
         channel_support = interaction.guild.get_channel(config.CHANNEL_SUPPORT)
         channel_support = (channel_support and channel_support.mention) or "#support"
         await interaction.send(
             content="\n\n".join([
-                f"Check out the Getting Started Guide to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+                f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
                 "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
             ]),
             ephemeral=True
@@ -113,18 +114,18 @@ class BuildVrAppStep(IntroPage):
 
 class BuildAlloverseAppStep(IntroPage):
     def message(self):
-        return "🤩 Wonderful! How would you like to help?"
+        return "🛠️ Wonderful! How would you like to help?"
 
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_PROGRAMMER)
-        channel = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
-        channel = (channel and channel.mention) or "#coding-alloverse"
+        channel_allocoding = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
+        channel_allocoding = (channel and channel.mention) or "#coding-alloverse"
         await interaction.send(
             content="\n\n".join([
-                f"🤖 Whoa! Someone speaks my language! You'll feel right at home in {channel} :3",
+                f"👩‍💻 Fabulous! You'll feel right at home in {channel_allocoding}!",
             ]),
-            embed=nextcord.Embed(title="Take a look at the current programming tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
+            embed=nextcord.Embed(title="👉 To get started, check out the current programming tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
         )
 
@@ -137,9 +138,9 @@ class BuildAlloverseAppStep(IntroPage):
         channel_vis = (channel_vis and channel_vis.mention) or "#visual-design"
         await interaction.send(
             content="\n\n".join([
-                f"🖌️ Fantastic! You'll love {channel_prod} or {channel_vis}!",
+                f"👩‍🎨 Fantastic! You'll love {channel_prod} or {channel_vis}!",
             ]),
-            embed=nextcord.Embed(title="Take a look at the current design tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
+            embed=nextcord.Embed(title="👉 To get started, check out the current design tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
         )
 
@@ -147,12 +148,12 @@ class BuildAlloverseAppStep(IntroPage):
     async def design(self, button, interaction: Interaction):
         await interaction.send(
             content="\n\n".join([
-                "💰Wow! You're a hero. Bills needs a-paying. For financial contributions, please consider becoming a GitHub Sponsor.",
+                "💰 Wow! You're a hero. Bills needs a-paying. For financial contributions, please consider becoming a GitHub Sponsor.",
             ]),
             ephemeral=True
         )
 
-    @nextcord.ui.button(label="Discord Boosting", emoji="🔋")
+    @nextcord.ui.button(label="Discord Boosting", emoji="💎")
     async def design(self, button, interaction: Interaction):
         await interaction.send(
             content="\n\n".join([
@@ -170,18 +171,19 @@ class BuildAlloverseAppStep(IntroPage):
         channel_alloverse = (channel_alloverse and channel_alloverse.mention) or "#alloverse"
         await interaction.send(
             content="\n\n".join([
-                f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel. Additionally, you can help make a difference simply by talking about Alloverse IRL, following us on social media and post using the hashtag {channel_alloverse}.",
+                f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel.",
+                "Additionally, you can help make a difference simply by talking about Alloverse IRL, following us on social media and post using the hashtag {channel_alloverse}.",
             ]),
             ephemeral=True
         )
 
-    @nextcord.ui.button(label="Other", emoji="🌎")
+    @nextcord.ui.button(label="Other", emoji="🤔")
     async def design(self, button, interaction: Interaction):
         user_tobi = interaction.client.get_user(config.USER_TOBI)
         user_tobi = user_tobi and f"to {user_tobi.mention}"
         await interaction.send(
             content="\n\n".join([
-                f"⁉️ Oh, Interesting! Please reach out {user_tobi} and we'll chat about it, ok?",
+                f"🤔 Oh, interesting! Please reach out {user_tobi} and we'll chat about it, ok?",
             ]),
             ephemeral=True
         )
