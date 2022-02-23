@@ -22,17 +22,40 @@ class IntroPage(nextcord.ui.View):
         else:
             await utils.log(user.guild, f"Failed to find role_id {role_id} for {user.mention}")
 
-class IntroductionStep(IntroPage): #TODO: Add the current welcome/rules here
+class IntroductionStep(IntroPage):
     def message(self):
-        return f"💁 Now, what would you like to do?"
+        welcomemsg = "\n\n".join([
+            f"🎉 Hello, fellow XR enthusiast! How nice of you to join us!",
+            "Alloverse is the *open source metaverse - with, by and for its users*. Very simply put, it's a collection of virtual worlds, furnished with user-created \"apps\" that support collaboration, play and personal connections.",
+            "We believe XR is here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the profits-driven approach taken by large corporations, where developers and users commit to a closed-platform system (such as the Google & Apple app stores).",
+            "The Alloverse community is dedicated to any kind of XR endeavours, such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions.",
+            "Additionally, this Discord server is our outlet to share our day-to-day development and progress of Alloverse. We'd like nothing more than your support, feedback and contributions. Again, thanks for stopping by!",
+            "💁 **Now, how would you like to get started?**"
+        ])
+        return welcomemsg
 
     @nextcord.ui.button(label="Build a VR App", emoji="🎁")
     async def build_vr_button(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
-        next = BuildVrAppStep(self)
-        await interaction.send(next.message(), view=next, ephemeral=True)
+        # next = BuildVrAppStep(self)
+        # await interaction.send(next.message(), view=next, ephemeral=True)
+        channel_support = interaction.guild.get_channel(config.CHANNEL_SUPPORT)
+        channel_support = (channel_support and channel_support.mention) or "#support"
+        buildVrAppMessage = "\n\n".join([
+            "Great! Let's get you up and running!",
+            f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+            "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+        ])
+        await interaction.send(
+            content = buildVrAppMessage,
+            # content="\n\n".join([
+            #     f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels.",
+            #     "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/1", 
+            # ]),
+            ephemeral=True
+        )
 
-    @nextcord.ui.button(label="Build the Alloverse Platform", emoji="🛠")
+    @nextcord.ui.button(label="Contribute to the Alloverse Platform", emoji="🛠")
     async def build_alloverse_button(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEVELOPER)
         next = BuildAlloverseAppStep(self)
@@ -52,7 +75,7 @@ class IntroductionStep(IntroPage): #TODO: Add the current welcome/rules here
                 "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/1", 
             ]),
             ephemeral=True
-    )
+        )
     
     @nextcord.ui.button(label="Just look around", emoji="👀")
     async def just_looking_around_button(self, button, interaction: Interaction):
@@ -71,7 +94,7 @@ class IntroductionStep(IntroPage): #TODO: Add the current welcome/rules here
         )
 
 
-class BuildVrAppStep(IntroPage): #TODO: Temporarily simplify this step with a single path: Check out the getting started-guide and give 'em a channel or two to join.
+class BuildVrAppStep(IntroPage):
     def message(self):
         return "Great! Let's get you up and running! Do you have previous development experience?"
 
@@ -114,7 +137,7 @@ class BuildVrAppStep(IntroPage): #TODO: Temporarily simplify this step with a si
 
 class BuildAlloverseAppStep(IntroPage):
     def message(self):
-        return "🛠 Wonderful! How would you like to help?"
+        return "🛠 Wonderful! **How would you like to help?**"
 
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
