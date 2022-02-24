@@ -26,10 +26,11 @@ class IntroductionStep(IntroPage):
     def message(self):
         welcomemsg = "\n\n".join([
             f"🎉 Hello, fellow XR enthusiast! How nice of you to join us!",
-            "Alloverse is the *open source metaverse - with, by and for its users*. Very simply put, it's a collection of virtual worlds, furnished with user-created \"apps\" that support collaboration, play and personal connections.",
-            "We believe XR is here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the profits-driven approach taken by large corporations, where developers and users commit to a closed-platform system (such as the Google & Apple app stores).",
-            "The Alloverse community is dedicated to any kind of XR endeavours, such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions.",
-            "Additionally, this Discord server is our outlet to share our day-to-day development and progress of Alloverse. We'd like nothing more than your support, feedback and contributions. Again, thanks for stopping by!",
+            "**Alloverse is the open source metaverse - created with, by and for its users**. Very simply put, it's a collection of virtual worlds, furnished with user-created virtual apps to support collaboration, play and personal connections.",
+            "We believe XR is here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the profit-driven Metaverse approach taken by large corporations where developers and users commit to a closed-platform system (such as the Google & Apple app stores).",
+            "This Discord server is our outlet to share our day-to-day development and progress of Alloverse. We'd like nothing more than your support, feedback and contributions.",
+            "That said, the Alloverse community is dedicated to **any and all XR endeavours** - such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions. Again, thanks for stopping by!",
+            #"Code of Conduct (http://tiny.cc/alloverse-code-of-conduct) and introduce yourself in the general channel."
             "💁 **Now, how would you like to get started?**"
         ])
         return welcomemsg
@@ -71,8 +72,8 @@ class IntroductionStep(IntroPage):
         
         await interaction.send(
             content="\n\n".join([
-                f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels.",
-                "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/1", 
+                f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels!",
+                #"If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/2/views/1", 
             ]),
             ephemeral=True
         )
@@ -85,10 +86,13 @@ class IntroductionStep(IntroPage):
         channel_showcase = interaction.guild.get_channel(config.CHANNEL_SHOWCASE)
         channel_showcase = (channel_showcase and channel_showcase.mention) or "#showcase"
 
+        channel_general = interaction.guild.get_channel(config.CHANNEL_GENERAL)
+        channel_general = (channel_general and channel_general.mention) or "#general"
+
         await interaction.send(
             content="\n\n".join([
                 "👀 Okay then! That was always allowed!",
-                f"Check out {channel_announcements} for a quick look at the current state of Alloverse, or {channel_showcase} to see what others are building. Then, come say hi in the General voice- or text channels!"
+                f"You're welcome to check out any channel you want, but a good start would be to introduce yourself in {channel_general}. Then, head over to {channel_announcements} for a quick look at the current state of Alloverse, or {channel_showcase} to see what others are building."
             ]),
             ephemeral=True
         )
@@ -137,7 +141,7 @@ class BuildVrAppStep(IntroPage):
 
 class BuildAlloverseAppStep(IntroPage):
     def message(self):
-        return "🛠 Wonderful! **How would you like to help?**"
+        return "🛠 **Wonderful! How would you like to help?**"
 
     @nextcord.ui.button(label="Coding", emoji="👩‍💻")
     async def coding(self, button, interaction: Interaction):
@@ -147,7 +151,7 @@ class BuildAlloverseAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"👩‍💻 Fabulous! You'll feel right at home in {channel_allocoding}!",
-                "👉 Check out the beginner-friendly programming tasks in GitHub: https://github.com/orgs/alloverse/projects/" #TODO: Update with a proper URL
+                "👉 Check out our current coding tasks in GitHub: https://github.com/orgs/alloverse/projects/2/views/6"
             ]),
             # embed=nextcord.Embed(title="👉 To get started, check out the current programming tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
@@ -156,14 +160,14 @@ class BuildAlloverseAppStep(IntroPage):
     @nextcord.ui.button(label="Design", emoji="👨‍🎨")
     async def design(self, button, interaction: Interaction):
         await self.give_user_role(interaction.user, config.ROLE_DESIGNER)
-        channel_prod = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
-        channel_prod = (channel_prod and channel_prod.mention) or "#product-design"
-        channel_vis = interaction.guild.get_channel(config.CHANNEL_APP_DEVELOPERS)
-        channel_vis = (channel_vis and channel_vis.mention) or "#visual-design"
+        channel_prod_design = interaction.guild.get_channel(config.CHANNEL_PRODUCT_DESIGN)
+        channel_prod_design = (channel_prod_design and channel_prod_design.mention) or "#product-design"
+        channel_visual_design = interaction.guild.get_channel(config.CHANNEL_VISUAL_DESIGN)
+        channel_visual_design = (channel_visual_design and channel_visual_design.mention) or "#visual-design"
         await interaction.send(
             content="\n\n".join([
-                f"👨‍🎨 Fantastic! You'll love {channel_prod} or {channel_vis}!",
-                "👉 Check out the current beginner-friendly design tasks in GitHub: https://github.com/orgs/alloverse/projects/" #TODO: Update with a proper URL
+                f"👨‍🎨 Fantastic! You'll love {channel_prod_design} or {channel_visual_design}!",
+                "👉 Check out our current design tasks in GitHub: https://github.com/orgs/alloverse/projects/2/views/5"
             ]),
             # embed=nextcord.Embed(title="👉 To get started, check out the current design tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
@@ -173,7 +177,7 @@ class BuildAlloverseAppStep(IntroPage):
     async def financial(self, button, interaction: Interaction):
         await interaction.send(
             content="\n\n".join([
-                "💰 Wow! You're a hero. Bills needs a-paying. For financial contributions, please consider becoming a GitHub Sponsor.",
+                "💰 Thank you! The simplest way to support us financially is to become a GitHub Sponsor: https://github.com/sponsors/alloverse. All contributions go toward the continous development of Alloverse.",
             ]),
             ephemeral=True
         )
@@ -182,7 +186,7 @@ class BuildAlloverseAppStep(IntroPage):
     async def boosting(self, button, interaction: Interaction):
         await interaction.send(
             content="\n\n".join([
-                "💎 We'll gladly be on the receiving end of your generosity! In the top left corner of the Alloverse Discord, you'll find the button to boost.",
+                "💎 We appreciate your support! More boosts means more visibility and perks for Alloverse. The button can be found in the top left corner, under the server name. Thanks a lot!",
             ]),
             ephemeral=True
         )
@@ -191,9 +195,6 @@ class BuildAlloverseAppStep(IntroPage):
     async def marketing(self, button, interaction: Interaction):
         channel_marketing = interaction.guild.get_channel(config.CHANNEL_MARKETING)
         channel_marketing = (channel_marketing and channel_marketing.mention) or "#marketing"
-
-        # channel_alloverse = interaction.guild.get_channel(config.CHANNEL_CODING_ALLOVERSE)
-        # channel_alloverse = (channel_alloverse and channel_alloverse.mention) or "#alloverse"
         await interaction.send(
             content="\n\n".join([
                 f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel.",
