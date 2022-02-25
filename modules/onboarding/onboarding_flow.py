@@ -25,12 +25,11 @@ class IntroPage(nextcord.ui.View):
 class IntroductionStep(IntroPage):
     def message(self):
         welcomemsg = "\n\n".join([
-            f"🎉 Hello, fellow XR enthusiast! How nice of you to join us!",
+            f"🎉 Hello, fellow VR enthusiast! How nice of you to join us!",
             "**Alloverse is the open source metaverse - created with, by and for its users**. Very simply put, it's a collection of virtual worlds, furnished with user-created virtual apps to support collaboration, play and personal connections.",
-            "We believe XR is here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the profit-driven Metaverse approach taken by large corporations where developers and users commit to a closed-platform system (such as the Google & Apple app stores).",
-            "This Discord server is our outlet to share our day-to-day development and progress of Alloverse. We'd like nothing more than your support, feedback and contributions.",
-            "That said, the Alloverse community is dedicated to **any and all XR endeavours** - such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions. Again, thanks for stopping by!",
-            #"Code of Conduct (http://tiny.cc/alloverse-code-of-conduct) and introduce yourself in the general channel."
+            "We believe AR and VR are here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the large corporations' closed-platform Metaverse (think: the next generation of the Android & iOS ecosystems), in favor of providing an *open* standard for the future of the immersive collaboration.",
+            "The primary purpose of this Discord server is to support AlloApp developers and discuss the evolution of the Alloverse platform."
+            "That said, the Alloverse community is open for discussing **any and all VR and AR endeavours** - such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions. We're grateful for all support, feedback and contributions. Again, thanks for stopping by!",
             "💁 **Now, how would you like to get started?**"
         ])
         return welcomemsg
@@ -73,7 +72,7 @@ class IntroductionStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels!",
-                #"If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/orgs/alloverse/projects/2/views/1", 
+                "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/alloverse/allovisor/issues/new", 
             ]),
             ephemeral=True
         )
@@ -203,13 +202,13 @@ class BuildAlloverseAppStep(IntroPage):
             ephemeral=True
         )
 
-    @nextcord.ui.button(label="Other", emoji="🤔")
+    @nextcord.ui.button(label="Other", emoji="👽")
     async def other(self, button, interaction: Interaction):
         user_tobi = interaction.client.get_user(config.USER_TOBI)
         user_tobi = user_tobi and f"to {user_tobi.mention}"
         await interaction.send(
             content="\n\n".join([
-                f"🤔 Oh, interesting! Please reach out {user_tobi} and we'll chat about it, ok?",
+                f"👽 Oh, cool, we'd love to hear about it! Reach out to {user_tobi} and let's talk about it, ok?",
             ]),
             ephemeral=True
         )
