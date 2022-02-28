@@ -39,12 +39,16 @@ class IntroductionStep(IntroPage):
         await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
         # next = BuildVrAppStep(self)
         # await interaction.send(next.message(), view=next, ephemeral=True)
+        user_tobi = interaction.client.get_user(config.USER_TOBI)
+        user_tobi = user_tobi and f"{user_tobi.mention}"
+        user_nevyn = interaction.client.get_user(config.USER_NEVYN)
+        user_nevyn = user_nevyn and f"{user_nevyn.mention}"
         channel_support = interaction.guild.get_channel(config.CHANNEL_SUPPORT)
         channel_support = (channel_support and channel_support.mention) or "#support"
         buildVrAppMessage = "\n\n".join([
             "Great! Let's get you up and running!",
             f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
-            "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+            f"Oh, by the way! If you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a dedicated channel for you to communicate!"
         ])
         await interaction.send(
             content = buildVrAppMessage,
@@ -197,7 +201,8 @@ class BuildAlloverseAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel.",
-                "Additionally, you can help make a difference simply by talking about Alloverse IRL, following us on social media and post using the hashtag `#alloverse`.",
+                "Additionally, you can help make a difference simply by spreading the word about Alloverse, following us on social media and posting with the hashtag `#alloverse`:",
+                "📷 Instagram: https://instagram.com/alloversevr\n🐦 Twitter: https://twitter.com/alloverse\n💼 Linkedin: https://www.linkedin.com/company/alloverse\n👍 Facebook: https://www.facebook.com/AlloverseVR\n🍿 Youtube: https://www.youtube.com/channel/UCcfGtH_F45ZdD-QY1gnBniA",
             ]),
             ephemeral=True
         )
@@ -205,7 +210,7 @@ class BuildAlloverseAppStep(IntroPage):
     @nextcord.ui.button(label="Other", emoji="👽")
     async def other(self, button, interaction: Interaction):
         user_tobi = interaction.client.get_user(config.USER_TOBI)
-        user_tobi = user_tobi and f"to {user_tobi.mention}"
+        user_tobi = user_tobi and f"{user_tobi.mention}"
         await interaction.send(
             content="\n\n".join([
                 f"👽 Oh, cool, we'd love to hear about it! Reach out to {user_tobi} and let's talk about it, ok?",
