@@ -202,7 +202,7 @@ class BuildAlloverseAppStep(IntroPage):
             content="\n\n".join([
                 f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel.",
                 "Additionally, you can help make a difference simply by spreading the word about Alloverse, following us on social media and posting with the hashtag `#alloverse`:",
-                "📷 Instagram: https://instagram.com/alloversevr\n🐦 Twitter: https://twitter.com/alloverse\n💼 Linkedin: https://www.linkedin.com/company/alloverse\n👍 Facebook: https://www.facebook.com/AlloverseVR\n🍿 Youtube: https://www.youtube.com/channel/UCcfGtH_F45ZdD-QY1gnBniA",
+                "📷 Instagram: https://instagram.com/alloversevr\n🐦 Twitter: https://twitter.com/alloverse\n💼 Linkedin: https://www.linkedin.com/company/alloverse\n👍 Facebook: https://www.facebook.com/AlloverseVR\n🍿 Youtube: https://www.youtube.com/channel/UCcfGtH_F45ZdD-QY1gnBniA\n💃 TikTok: https://vm.tiktok.com/ZMLD6fUhL/",
             ]),
             ephemeral=True
         )
