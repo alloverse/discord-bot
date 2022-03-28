@@ -18,7 +18,7 @@ class IntroPage(nextcord.ui.View):
         role = user.guild.get_role(role_id)
         if role:
             await user.add_roles(role)
-            await utils.log(user.guild, f"Gave {role.mention} to {user.mention}")
+            await utils.output(user.guild, f"Gave {role.mention} to {user.mention}")
         else:
             await utils.log(user.guild, f"Failed to find role_id {role_id} for {user.mention}")
 
