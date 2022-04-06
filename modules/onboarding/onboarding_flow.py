@@ -36,7 +36,6 @@ class IntroductionStep(IntroPage):
 
     @nextcord.ui.button(label="Build a VR App", emoji="🎁")
     async def build_vr_button(self, button, interaction: Interaction):
-        await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
         # next = BuildVrAppStep(self)
         # await interaction.send(next.message(), view=next, ephemeral=True)
         user_tobi = interaction.client.get_user(config.USER_TOBI)
@@ -58,12 +57,15 @@ class IntroductionStep(IntroPage):
             # ]),
             ephemeral=True
         )
+        await utils.log(interaction.guild, interaction.user.mention + " clicked the \"Build a VR App\" button.")
+        await self.give_user_role(interaction.user, config.ROLE_APP_DEVELOPER)
 
     @nextcord.ui.button(label="Contribute to the Alloverse Platform", emoji="🛠")
     async def build_alloverse_button(self, button, interaction: Interaction):
-        await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEVELOPER)
         next = BuildAlloverseAppStep(self)
         await interaction.send(next.message(), view=next, ephemeral=True)
+        await self.give_user_role(interaction.user, config.ROLE_PLATFORM_DEVELOPER)
+        await utils.log(interaction.guild, interaction.user.mention + " clicked the \"Contribute to the Alloverse Platform\" button.")
 
     @nextcord.ui.button(label="File a bug or feature", emoji="🐞")
     async def file_a_bug_button(self, button, interaction: Interaction):
@@ -80,6 +82,7 @@ class IntroductionStep(IntroPage):
             ]),
             ephemeral=True
         )
+        await utils.log(interaction.guild, interaction.user.mention + " clicked the \"File a bug or feature\" button.")
     
     @nextcord.ui.button(label="Just look around", emoji="👀")
     async def just_looking_around_button(self, button, interaction: Interaction):
@@ -99,6 +102,7 @@ class IntroductionStep(IntroPage):
             ]),
             ephemeral=True
         )
+        await utils.log(interaction.guild, interaction.user.mention + " clicked the \"Just look around\" button.")
 
 
 class BuildVrAppStep(IntroPage):
