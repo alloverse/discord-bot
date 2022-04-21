@@ -28,8 +28,7 @@ class IntroductionStep(IntroPage):
             f"🎉 Hello, fellow VR enthusiast! How nice of you to join us!",
             "**Alloverse is the open source metaverse - created with, by and for its users**. Very simply put, it's a collection of virtual worlds, furnished with user-created virtual apps to support collaboration, play and personal connections.",
             "We believe AR and VR are here to stay, much like how smartphone apps and IOT devices became the next generation of what we once knew to be \"the Internet\". Our aim is to sideline the large corporations' closed-platform Metaverse (think: the next generation of the Android & iOS ecosystems), in favor of providing an *open* standard for the future of the immersive collaboration.",
-            "The primary purpose of this Discord server is to support AlloApp developers and discuss the evolution of the Alloverse platform."
-            "That said, the Alloverse community is open for discussing **any and all VR and AR endeavours** - such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions. We're grateful for all support, feedback and contributions. Again, thanks for stopping by!",
+            "The primary purpose of this Discord server is to support AlloApp developers and discuss the evolution of the Alloverse platform. That said, the Alloverse community is open for discussing **any and all VR and AR endeavours** - such as the sharing of studies, use cases, UX/UI design and tips on how to code stuff for use in three dimensions. We're grateful for all support, feedback and contributions. Again, thanks for stopping by!",
             "💁 **Now, how would you like to get started?**"
         ])
         return welcomemsg
@@ -46,7 +45,9 @@ class IntroductionStep(IntroPage):
         channel_support = (channel_support and channel_support.mention) or "#support"
         buildVrAppMessage = "\n\n".join([
             "Great, let's get you up and running!",
-            f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes or browse all public AlloApps (https://github.com/orgs/alloverse/repositories?q=topic%3Aalloapp) for inspiration. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+            f"- Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes",
+            f"- Browse public AlloApps (https://github.com/orgs/alloverse/repositories?q=topic%3Aalloapp) for inspiration.",
+            f"- You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
             f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
         ])
         await interaction.send(
@@ -98,7 +99,7 @@ class IntroductionStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 "👀 Okay then! That was always allowed!",
-                f"You're welcome to check out any channel you want, but a good start would be to introduce yourself in {channel_general}. Then, head over to {channel_announcements} for a quick look at the current state of Alloverse, or {channel_showcase} to see what others are building."
+                f"A good start would be to introduce yourself in {channel_general}. Then, head over to {channel_announcements} for a quick look at the current state of Alloverse, or {channel_showcase} to see what others are building."
             ]),
             ephemeral=True
         )
