@@ -45,9 +45,9 @@ class IntroductionStep(IntroPage):
         channel_support = interaction.guild.get_channel(config.CHANNEL_SUPPORT)
         channel_support = (channel_support and channel_support.mention) or "#support"
         buildVrAppMessage = "\n\n".join([
-            "Great! Let's get you up and running!",
-            f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
-            f"Oh, by the way! If you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a dedicated channel for you to communicate!"
+            "Great, let's get you up and running!",
+            f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes or browse all public AlloApps (https://github.com/orgs/alloverse/repositories?q=topic%3Aalloapp) for inspiration. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+            f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
         ])
         await interaction.send(
             content = buildVrAppMessage,
@@ -116,7 +116,7 @@ class BuildVrAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
-                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+                f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
             ]),
             ephemeral=True
         )
@@ -128,7 +128,7 @@ class BuildVrAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"🫖 Super! Next stop: our documentation (which also houses a Getting Started Guide). See you in {channel}!",
-                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!"
+                f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
             ]),
             ephemeral=True
         )
@@ -140,7 +140,7 @@ class BuildVrAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"Super! We wrote this blog post for people just like you! See you in {channel}!",
-                "Oh, by the way! If you have teammates, let an Alloverse admin know and we'll create a dedicated channel for you to communicate!",
+                f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
             ]),
             ephemeral=True
         )
