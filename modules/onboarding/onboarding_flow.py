@@ -45,8 +45,8 @@ class IntroductionStep(IntroPage):
         channel_support = (channel_support and channel_support.mention) or "#support"
         buildVrAppMessage = "\n\n".join([
             "Great, let's get you up and running!",
-            f"- Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes",
-            f"- Browse public AlloApps (https://github.com/orgs/alloverse/repositories?q=topic%3Aalloapp) for inspiration.",
+            f"- Check out the Getting Started Guide (<https://docs.alloverse.com/>) to create your own app in a few minutes",
+            f"- Browse public AlloApps (<https://github.com/orgs/alloverse/repositories?q=topic%3Aalloapp>) for inspiration.",
             f"- You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
             f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
         ])
@@ -79,7 +79,7 @@ class IntroductionStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"🐞 Thanks! Please let us know in the {channel_coding} or {channel_suggestion} channels!",
-                "If you want, you could also go straight to filing it yourself in our Github issue tracking system: https://github.com/alloverse/allovisor/issues/new", 
+                "If you want, you could also go straight to filing it yourself in our Github issue tracking system: <https://github.com/alloverse/allovisor/issues/new>", 
             ]),
             ephemeral=True
         )
@@ -116,7 +116,7 @@ class BuildVrAppStep(IntroPage):
         channel_support = (channel_support and channel_support.mention) or "#support"
         await interaction.send(
             content="\n\n".join([
-                f"Check out the Getting Started Guide (https://docs.alloverse.com/) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
+                f"Check out the Getting Started Guide (<https://docs.alloverse.com/>) to create your own app in a few minutes. You're also always welcome to ask questions in {channel_support} - we respond to all questions, no matter what level.",
                 f"Also, if you have teammates, let an Alloverse admin ({user_tobi} or {user_nevyn}) know and we'll create a private channel just for you."
             ]),
             ephemeral=True
@@ -159,7 +159,7 @@ class BuildAlloverseAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"👩‍💻 Fabulous! You'll feel right at home in {channel_allocoding}!",
-                "👉 Check out our current coding tasks in GitHub: https://github.com/orgs/alloverse/projects/2/views/6"
+                "👉 Check out our current coding tasks in GitHub: <https://github.com/orgs/alloverse/projects/2/views/6>"
             ]),
             # embed=nextcord.Embed(title="👉 To get started, check out the current programming tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
@@ -175,7 +175,7 @@ class BuildAlloverseAppStep(IntroPage):
         await interaction.send(
             content="\n\n".join([
                 f"👨‍🎨 Fantastic! You'll love {channel_prod_design} or {channel_visual_design}!",
-                "👉 Check out our current design tasks in GitHub: https://github.com/orgs/alloverse/projects/2/views/5"
+                "👉 Check out our current design tasks in GitHub: <https://github.com/orgs/alloverse/projects/2/views/5>"
             ]),
             # embed=nextcord.Embed(title="👉 To get started, check out the current design tasks in GitHub!", url="https://github.com/orgs/alloverse/projects/1"),
             ephemeral=True
@@ -185,7 +185,7 @@ class BuildAlloverseAppStep(IntroPage):
     async def financial(self, button, interaction: Interaction):
         await interaction.send(
             content="\n\n".join([
-                "💰 Thank you! The simplest way to support us financially is to become a GitHub Sponsor: https://github.com/sponsors/alloverse. All contributions go toward the continous development of Alloverse.",
+                "💰 Thank you! The simplest way to support us financially is to become a GitHub Sponsor: <https://github.com/sponsors/alloverse>. All contributions go toward the continous development of Alloverse.",
             ]),
             ephemeral=True
         )
@@ -207,7 +207,7 @@ class BuildAlloverseAppStep(IntroPage):
             content="\n\n".join([
                 f"📣 Helping us reach out to more users & contributors is extremely valuable - that's our focus over in the {channel_marketing} channel.",
                 "Additionally, you can help make a difference simply by spreading the word about Alloverse, following us on social media and posting with the hashtag `#alloverse`:",
-                "📷 Instagram: https://instagram.com/alloversevr\n🐦 Twitter: <https://twitter.com/alloverse>\n💼 Linkedin: https://www.linkedin.com/company/alloverse\n👍 Facebook: <https://www.facebook.com/AlloverseVR>\n🍿 Youtube: <https://www.youtube.com/channel/UCcfGtH_F45ZdD-QY1gnBniA>\n💃 TikTok: https://vm.tiktok.com/ZMLD6fUhL/",
+                "📷 Instagram: <https://instagram.com/alloversevr>\n🐦 Twitter: <https://twitter.com/alloverse>\n💼 Linkedin: <https://www.linkedin.com/company/alloverse>\n👍 Facebook: <https://www.facebook.com/AlloverseVR>\n🍿 Youtube: <https://www.youtube.com/channel/UCcfGtH_F45ZdD-QY1gnBniA>\n💃 TikTok: <https://vm.tiktok.com/ZMLD6fUhL/>",
             ]),
             ephemeral=True
         )
