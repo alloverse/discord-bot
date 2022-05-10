@@ -12,5 +12,6 @@ load_dotenv()
 bot = commands.Bot(command_prefix='!', intents=Intents(members=True, guilds=True))
 
 bot.load_extension('modules.onboarding.cog')
+bot.load_extension('modules.logging.cog')
 
 bot.run(os.getenv("DISCORD_TOKEN"))
