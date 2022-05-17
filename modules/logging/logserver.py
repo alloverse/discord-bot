@@ -2,16 +2,34 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from multiprocessing import Event
 import webbrowser
 import threading, os, json
+import config
+
+from config import HTTP_SECRET
 
 class Handler(BaseHTTPRequestHandler):
     def on_event(self, js):
         print("Incoming log event:", js)
 
     def do_POST(self):
-        print("hello", dir(self.request))
+        if config.HTTP_SECRET in [None, ""]:
+            self.send_response(404)
+            self.end_headers()
+            return
 
-        content_len = int(self.headers.get('Content-Length'))
-        post_body = self.rfile.read(content_len)
+        secret = self.headers.get("x-application-secret")
+        if secret != config.HTTP_SECRET:
+            self.send_response(404)
+            self.end_headers()
+            return
+
+
+        content_len = self.headers.get('Content-Length')
+        if content_len in [None, ""]: 
+            self.send_response(300)
+            self.end_headers()
+            return
+        
+        post_body = self.rfile.read(int(content_len))
 
         js = json.loads(post_body)
         self.on_event(js)
